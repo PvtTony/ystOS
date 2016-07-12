@@ -14,7 +14,7 @@ LD_FLAGS = -T scripts/kernel.ld -m elf_i386 -nostdlib
 ASM_FLAGS = -f elf -g -F stabs
 
 all: $(S_OBJECTS) $(C_OBJECTS) link update_image
-
+         
 .c.o:
 	@echo Compiling Code file $< ...
 	$(CC) $(C_FLAGS) $< -o $@
@@ -33,14 +33,14 @@ clean:
 
 .PHONY:update_image
 update_image:
-	sudo mount floopy.img /mnt/kernel
+	sudo mount floppy.img /mnt/kernel
 	sudo cp hx_kernel /mnt/kernel/hx_kernel
 	sleep 1
 	sudo umount /mnt/kernel
 
 .PHONY:mount_image
 mount_image:
-	sudo mount floopy.img /mnt/kernel
+	sudo mount floppy.img /mnt/kernel
 
 .PHONY:umount_image
 umonut_image:
@@ -48,7 +48,7 @@ umonut_image:
 
 .PHONY:qemu
 qemu:
-	qemu -fda floopy.img -boot a
+	qemu -fda floppy.img -boot a
 
 .PHONY:bochs
 bochs:
@@ -56,6 +56,6 @@ bochs:
 
 .PHONY:debug
 debug:
-	qemu -S -s -fda floopy.img -boot a &
+	qemu -S -s -fda floppy.img -boot a &
 	sleep 1
 	cgdb -x tools/gdbinit

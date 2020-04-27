@@ -26,3 +26,6 @@ void printk(const char *format, ...);
 
 // 内核的打印函数 带颜色
 void printk_color(real_color_t back, real_color_t fore, const char *format, ...);
+
+// 打印通用寄存器的值
+void print_gpr_status();

@@ -3,6 +3,5 @@
 
 bx_enh_dbg.ini
 bochsout.txt
-floppy.img
 *.o
 yst_kernel

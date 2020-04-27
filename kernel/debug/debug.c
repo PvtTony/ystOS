@@ -36,7 +36,9 @@ void panic(const char *msg)
 	printk("*** System panic: %s\n", msg);
 	print_stack_trace();
 	printk("***\n");
-	
+	printk("*** GPRs ***\n");
+	print_gpr_status();
+	printk("***\n");
 	// 致命错误发生后打印栈信息后停止在这里
 	while(1);
 }
@@ -53,3 +55,19 @@ void print_stack_trace()
 	}
 }
 
+void print_gpr_status()
+{
+	uint32_t eax, ebx, ecx, edx, esp, ebp, esi, edi;
+	asm volatile ("mov %%eax, %0;" "mov %%ebx, %1;"
+	              "mov %%ecx, %2;" "mov %%edx, %3;"
+				  "mov %%esp, %4;" "mov %%ebp, %5;"
+				  "mov %%esi, %6;" "mov %%edi, %7;"
+				  : "=m"(eax), "=m"(ebx), 
+				    "=m"(ecx), "=m"(edx), 
+					"=m"(esp), "=m"(ebp), 
+					"=m"(esi), "=m"(edi));
+	printk("EAX = [%8xH]    EBX = [%8xH]", eax, ebx);
+	printk("    ECX = [%8xH]    EDX = [%8xH]", ecx, edx);
+	printk("ESP = [%8xH]    EBP = [%8xH]", esp, ebp);
+	printk("    ESI = [%8xH]    EDI = [%8xH]", esi, edi);
+}

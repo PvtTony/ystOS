@@ -3,6 +3,7 @@
 
 #include "types.h"
 
+//颜色枚举
 typedef enum real_color
 {
     rc_black = 0,

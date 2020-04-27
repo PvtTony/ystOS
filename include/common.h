@@ -11,4 +11,7 @@ uint8_t intb(uint16_t port);
 //Read a word from port
 uint16_t inw(uint16_t port);
 
+//bochs magic breakpoint
+void magic_bp();
+
 #endif //INCLUDE_COMMON_H_

@@ -1,0 +1,5 @@
+set architecture i386
+file yst_kernel
+target remote :1234
+break kern_entry
+c

@@ -1,0 +1,29 @@
+# bochs config
+# 内存
+megs: 32
+# ROM 文件
+romimage: file="$BXSHARE/BIOS-bochs-latest" 
+vgaromimage: file="$BXSHARE/VGABIOS-lgpl-latest"
+# 软盘
+floppya: 1_44=floppy.img, status=inserted
+# 启动设备为软盘
+boot: floppy
+# 鼠标不启用
+mouse: enabled=0
+# 键盘启用 US 键盘映射
+#keyboard_mapping: enabled=1, map="$BXSHARE/keymaps/x11−pc−us.map"
+keyboard: keymap="$BXSHARE/keymaps/x11-pc-us.map"
+# CPU 配置
+clock: sync=realtime
+cpu: model=pentium, ips=1000000
+# GUI debug
+display_library: x, options="gui_debug"
+#display_library: x
+# Magic Break
+magic_break: enabled=1
+# logging
+log: bochsout.txt
+debug: action=ignore
+info: action=report
+error: action=report
+panic: action=ask

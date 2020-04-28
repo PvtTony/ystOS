@@ -33,12 +33,13 @@ void print_cur_status()
 
 void panic(const char *msg)
 {
-	printk("*** System panic: %s\n", msg);
+	printk_color(rc_black, rc_red, "*** System panic! ***\n");
+	printk("Message: %s\n", msg);
+	printk("*** Stack trace ***\n");
 	print_stack_trace();
-	printk("***\n");
 	printk("*** GPRs ***\n");
 	print_gpr_status();
-	printk("***\n");
+	printk_color(rc_black, rc_red, "*********************\n");
 	// 致命错误发生后打印栈信息后停止在这里
 	while(1);
 }

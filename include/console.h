@@ -24,22 +24,22 @@ typedef enum real_color
     rc_white = 15
 }real_color_t;
 
-//Clear the screen
+//清屏
 void console_clear();
 
-//Print a char with color
+//打印单个字符
 void console_putc_color(char c, real_color_t back, real_color_t fore);
 
-//Print a String ended with \0 (foreground: white, background: black)
+//打印字符串 以 '\0' 为结尾 （白底黑字）
 void console_write(char *cstr);
 
-//Print a String ended with \0 with defined color
+//打印字符串 以 '\0' 为结尾 （指定颜色）
 void console_write_color(char *cstr, real_color_t back, real_color_t fore);
 
-//Print a hex number
+//打印十六进制数
 void console_write_hex(uint32_t n, real_color_t back, real_color_t fore);
 
-//Print a dec number
+//打印十进制数
 void console_write_dec(uint32_t n, real_color_t back, real_color_t fore);
 
 #endif //INCLUDE_CONSOLE_H_

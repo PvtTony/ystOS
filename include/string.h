@@ -19,6 +19,7 @@ static inline void memset(void *dest, uint8_t val, uint32_t len)
 	}
 }
 
+// 目标内存地址 清零
 static inline void bzero(void *dest, uint32_t len)
 {
 	memset(dest, 0, len);

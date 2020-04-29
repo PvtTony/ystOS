@@ -2,6 +2,7 @@
 #include "console.h"
 #include "debug.h"
 #include "gdt.h"
+#include "idt.h"
 
 /*
 ##    ##  ######  ########  #######   ######  
@@ -23,8 +24,11 @@ int kern_entry()
     print_logo();
     init_debug();
     init_gdt();
-    panic("test");
+    init_idt();
+    // panic("test");
     
+    asm volatile ("int $0x3"); 
+    asm volatile ("int $0x4");
     return 0;
 }
 

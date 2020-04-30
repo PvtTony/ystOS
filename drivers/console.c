@@ -64,6 +64,7 @@ static void scroll()
         {
             video_memory[i] = 0;
         }
+        cursor_y--;
     }
 }
 

@@ -13,6 +13,8 @@ ASM = nasm
 C_FLAGS = -c -g -Wall -m32 -ggdb -gstabs+ -nostdinc -fno-builtin -fno-stack-protector -I include
 LD_FLAGS = -T scripts/kernel.ld -m elf_i386 -nostdlib
 ASM_FLAGS = -f elf -g -F stabs
+QEMU_FLAGS = -cpu pentium -fda floppy.img -boot a 
+QEMU_DEBUG_FLAGS = $(QEMU_FLAGS) -S -s & 
 
 all: $(S_OBJECTS) $(C_OBJECTS) link update_image
          
@@ -50,19 +52,19 @@ umonut_image:
 
 .PHONY:qemu
 qemu:
-	qemu-system-i386 -cpu pentium -fda floppy.img -boot a
-
+	qemu-system-i386 $(QEMU_FLAGS)
+	
 .PHONY:bochs
 bochs:
 	bochs -q -f ./.bochsrc
 
 .PHONY:debug
 debug:
-	qemu-system-i386 -S -s -cpu pentium  -fda floppy.img -boot a &
+	qemu-system-i386 $(QEMU_DEBUG_FLAGS)
 	sleep 1
 	cgdb -x scripts/gdbinit
 .PHONY:debug_gui
 debug_gui:
-	qemu-system-i386 -S -s -cpu pentium  -fda floppy.img -boot a &
+	qemu-system-i386 $(QEMU_DEBUG_FLAGS)
 	sleep 1
 	kdbg -r localhost:1234 yst_kernel 

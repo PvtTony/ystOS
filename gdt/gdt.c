@@ -33,7 +33,7 @@ void init_gdt()
 	gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); 	// 用户模式数据段
 	// 加载全局描述符表地址到 GPTR 寄存器
 	gdt_flush((uint32_t)&gdt_desc_ptr);
-    printk_color(rc_black, rc_green, "GDT loaded successfully.  gdt_ptr = [0x%8x]\n", &gdt_desc_ptr);
+    printk_color(rc_black, rc_green, "GDT loaded successfully.  gdt_ptr = [0x%08x]\n", &gdt_desc_ptr);
 }
 
 // 全局描述符表构造函数，根据下标构造

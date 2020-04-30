@@ -95,7 +95,7 @@ void init_idt()
 	// 更新设置中断描述符表
 	idt_flush((uint32_t)&idt_ptr);
 
-    printk_color(rc_black, rc_green, "IDT loaded successfully.  idt_ptr = [0x%8x]\n", &idt_ptr);
+    printk_color(rc_black, rc_green, "IDT loaded successfully.  idt_ptr = [0x%08x]\n", &idt_ptr);
 }
 
 

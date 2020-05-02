@@ -1,9 +1,9 @@
 #include "common.h"
 #include "console.h"
-
+#include "vmm.h"
 
 // VGA 文字模式操作内存地址
-static uint16_t *video_memory = (uint16_t *)0xB8000;
+static uint16_t *video_memory = (uint16_t *)(0xB8000 + PAGE_OFFSET);
 
 //屏幕光标坐标
 static uint8_t cursor_x = 0;

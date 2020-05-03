@@ -7,6 +7,7 @@
 #include "pmm.h"
 #include "string.h"
 #include "vmm.h"
+#include "heap.h"
 
 /*
    System Entry 系统主入口
@@ -98,6 +99,7 @@ void kern_init()
 	show_memory_map();
     init_pmm();
     init_vmm();
+    init_heap();
 
     printk_color(rc_black, rc_red, "\nThe Count of Physical Memory Page is: %u\n\n", phy_page_count);
 
@@ -111,6 +113,9 @@ void kern_init()
 	printk_color(rc_black, rc_light_brown, "Alloc Physical Addr: 0x%08X\n", allc_addr);
 	allc_addr = pmm_alloc_page();
 	printk_color(rc_black, rc_light_brown, "Alloc Physical Addr: 0x%08X\n", allc_addr);
+
+   
+    test_heap();
 
     while (1)
     {

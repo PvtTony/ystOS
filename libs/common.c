@@ -30,3 +30,9 @@ void magic_bp()
 {
     asm volatile("xchg %bx, %bx");
 }
+
+// 开启中断
+inline void enable_intr()
+{
+    asm volatile ("sti");
+}

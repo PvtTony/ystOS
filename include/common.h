@@ -14,4 +14,7 @@ uint16_t inw(uint16_t port);
 //bochs magic breakpoint
 void magic_bp();
 
+// 开启中断
+void enable_intr();
+
 #endif //INCLUDE_COMMON_H_

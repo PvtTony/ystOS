@@ -8,6 +8,9 @@
 #include "string.h"
 #include "vmm.h"
 #include "heap.h"
+#include "task.h"
+#include "sched.h"
+#include "common.h"
 
 /*
    System Entry 系统主入口
@@ -17,13 +20,16 @@
 static void print_logo();
 
 // 内核初始化函数
-void kern_init();
+static void kern_init();
 
 // 开启分页机制之后的 Multiboot 数据指针
 multiboot_t *glb_mboot_ptr;
 
 // 开启分页机制之后的内核栈
 char kern_stack[STACK_SIZE];
+
+// 内核栈的栈顶
+uint32_t kern_stack_top;
 
 /* 内核使用的临时页表和页目录
  * 该地址必须是页对齐的地址，内存 0-640KB 肯定是空闲的 
@@ -67,7 +73,7 @@ __attribute__((section(".init.text"))) void kern_entry()
 	asm volatile ("mov %0, %%cr0" : : "r" (cr0));
 
     // 切换内核栈
-	uint32_t kern_stack_top = ((uint32_t)kern_stack + STACK_SIZE) & 0xFFFFFFF0;
+	kern_stack_top = ((uint32_t)kern_stack + STACK_SIZE) & 0xFFFFFFF0;
 	asm volatile ("mov %0, %%esp\n\t"
 			    "xor %%ebp, %%ebp" : : "r" (kern_stack_top));
 
@@ -78,6 +84,20 @@ __attribute__((section(".init.text"))) void kern_entry()
 	kern_init();
 }
 
+int flag = 0;
+
+int thread(void *arg)
+{
+	while (1) {
+		if (flag == 1) {
+			printk_color(rc_black, rc_green, "B");
+			flag = 0;
+		}
+	}
+
+	return 0;
+}
+
 void kern_init()
 {
     console_clear();
@@ -85,10 +105,8 @@ void kern_init()
     init_debug();
     init_gdt();
     init_idt();
-    // panic("test");
 
     init_timer(200);
-    // asm volatile ("sti");
     uint32_t start = (uint32_t) kern_start;
     uint32_t end = (uint32_t) kern_end;
     uint32_t size = (end - start + 1023) / 1024;
@@ -103,7 +121,7 @@ void kern_init()
 
     printk_color(rc_black, rc_red, "\nThe Count of Physical Memory Page is: %u\n\n", phy_page_count);
 
-	uint32_t allc_addr = NULL;
+/* 	uint32_t allc_addr = NULL;
 	printk_color(rc_black, rc_light_brown, "Test Physical Memory Alloc :\n");
 	allc_addr = pmm_alloc_page();
 	printk_color(rc_black, rc_light_brown, "Alloc Physical Addr: 0x%08X\n", allc_addr);
@@ -112,10 +130,20 @@ void kern_init()
 	allc_addr = pmm_alloc_page();
 	printk_color(rc_black, rc_light_brown, "Alloc Physical Addr: 0x%08X\n", allc_addr);
 	allc_addr = pmm_alloc_page();
-	printk_color(rc_black, rc_light_brown, "Alloc Physical Addr: 0x%08X\n", allc_addr);
+	printk_color(rc_black, rc_light_brown, "Alloc Physical Addr: 0x%08X\n", allc_addr); */
 
-   
     test_heap();
+    init_sched();
+	kernel_thread(thread, NULL);
+    
+    enable_intr();
+
+    while (1) {
+		if (flag == 0) {
+			printk_color(rc_black, rc_red, "A");
+			flag = 1;
+		}
+	}
 
     while (1)
     {

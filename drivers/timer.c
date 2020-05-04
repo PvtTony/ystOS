@@ -6,12 +6,14 @@
 #include "debug.h"
 #include "common.h"
 #include "idt.h"
+#include "sched.h"
 
 // 定时器回掉
 void timer_callback(pt_regs *regs)
 {
-	static uint32_t tick = 0;
-	printk_color(rc_black, rc_red, "Tick: %d\n", tick++);
+	/* static uint32_t tick = 0;
+	printk_color(rc_black, rc_red, "Tick: %d\n", tick++); */
+	schedule();
 }
 
 

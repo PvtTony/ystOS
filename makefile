@@ -67,4 +67,4 @@ debug:
 debug_gui:
 	qemu-system-i386 $(QEMU_DEBUG_FLAGS)
 	sleep 1
-	kdbg -r localhost:1234 yst_kernel 
+	gdbgui --gdb-args "-x scripts/gdbinit" -r
